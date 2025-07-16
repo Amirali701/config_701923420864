@@ -1,0 +1,40 @@
+name: 🚀 Start VLESS Reality + Cloudflare Tunnel
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-tunnel:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up environment
+        run: |
+          sudo apt update
+          sudo apt install -y wget unzip
+
+      - name: Install cloudflared
+        run: |
+          wget -q https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64
+          sudo mv cloudflared-linux-amd64 /usr/local/bin/cloudflared
+          sudo chmod +x /usr/local/bin/cloudflared
+
+      - name: Install sing-box
+        run: |
+          wget -qO sing-box.zip https://github.com/SagerNet/sing-box/releases/latest/download/sing-box-linux-amd64.zip
+          unzip sing-box.zip -d sing-box
+          chmod +x sing-box/sing-box
+
+      - name: Start Cloudflare Tunnel
+        run: |
+          nohup cloudflared tunnel --url http://127.0.0.1:3000 &> cf.log &
+
+      - name: Run sing-box
+        run: |
+          ./sing-box/sing-box run -c config.json &> sing.log &
+
+      - name: Show access info
+        run: |
+          echo "==== Tunnel URL ===="
+          grep 'trycloudflare.com' cf.log || echo "(Tunnel آدرس داخل cf.log نیست؟ تا چند دقیقه صبر کن.)"
+          echo "==== sing-box ==== "
+          tail -n 20 sing.log
