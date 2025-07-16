@@ -1,0 +1,34 @@
+{
+  "inbounds": [
+    {
+      "type": "vless",
+      "listen": "127.0.0.1",
+      "port": 3000,
+      "uuid": "11111111-2222-3333-4444-555555555555",
+      "flow": "xtls-rprx-vision",
+      "decryption": "none",
+      "sniff": true,
+      "sniff_override": ["http", "tls"],
+      "tls": {
+        "enabled": false
+      },
+      "streamSettings": {
+        "network": "ws",
+        "wsSettings": {
+          "path": "/"
+        }
+      },
+      "realitySettings": {
+        "dest": "127.0.0.1:3000",
+        "xver": 0,
+        "privateKey": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=",
+        "shortIds": ["k7YB3"]
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "type": "direct"
+    }
+  ]
+}
